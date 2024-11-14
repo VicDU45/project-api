@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize({
-    dialect: 'squile',
+    dialect: 'sqlite',
     storage: 'dom.sqlite'
 });
 
