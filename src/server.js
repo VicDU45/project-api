@@ -1,10 +1,12 @@
 const express = require('express');
 const userController = require('./controllers/userController');
+const pedidosController = require('./controllers/pedidosController');
 const swaggerUI = require("swagger-ui-express");
 
 const app = express();
 app.use(express.json());
 app.use('/api/user', userController);
+app.use('/api/pedidos', pedidosController);
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(require('./swagger.json')));
 

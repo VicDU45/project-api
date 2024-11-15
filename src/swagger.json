@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-      "title": "User API",
-      "description": "API para registro, login e listagem de usuários",
+      "title": "Control API",
+      "description": "API para registro, login e pedidos de compra",
       "version": "1.0.0"
     },
     "components": {
@@ -17,7 +17,7 @@
     "paths": {
       "/api/user/register": {
         "post": {
-          "tags": ["Users"],
+          "tags": ["Clientes"],
           "summary": "Registrar um novo usuário",
           "requestBody": {
             "required": true,
@@ -66,7 +66,7 @@
       },
       "/api/user/login": {
         "post": {
-          "tags": ["Users"],
+          "tags": ["Clientes"],
           "summary": "Login de usuário",
           "requestBody": {
             "required": true,
@@ -109,10 +109,82 @@
           }
         }
       },
-      "/api/user/users": {
+      "/api/pedidos/add": {
+        "post":{
+          "tags": ["Pedidos"],
+          "summary": "adicionar um novo pedido",
+          "parameters":{
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema":{
+              "type": "string"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "item": {
+                      "type": "string"
+                    },
+                    "quantidade": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200":{
+              "description": "sucesso ao adicionar o item na lista de pedidos"
+            },
+            "400":{
+              "description": "Erro ao adicionar o item na lista de pedidos"
+            }
+          }
+          
+        }
+      },
+      "/api/pedidos/tirar": {
+        "delete":{
+          "tags": ["Pedidos"],
+          "summary": "deletar um pedido da lista",
+          "parameters":{
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "schema":{
+              "type": "string"
+            },
+            "nameId": "pedidoID",
+            "inId": "path",
+            "requiredId": true,
+            "schemaId":{
+              "type": "integer"
+            }
+          } 
+        },
+        "responses": {
+          "200":{
+            "description": "sucesso ao tirar o item da lista de pedidos"
+          },
+          "400":{
+            "description": "Erro ao eliminar o item da lista de pedidos"
+          }  
+        }  
+      },
+      "/api/pedidos/All": {
         "get": {
-          "tags": ["Users"],
-          "summary": "Obter a lista de usuários",
+          "tags": ["Pedidos"],
+          "summary": "Obter a lista de pedidos",
           "security": [  
             {
               "BearerAuth": []
@@ -120,7 +192,7 @@
           ],
           "responses": {
             "200": {
-              "description": "Lista de usuários",
+              "description": "Lista de pedidos",
               "content": {
                 "application/json": {
                   "schema": {
@@ -129,11 +201,14 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "string",
-                          "format": "uuid"
+                         "type": "integer",
+                         "format":"uuid"
                         },
-                        "username": {
+                        "item": {
                           "type": "string"
+                        },
+                        "quantidade": {
+                          "type": "integer"
                         }
                       }
                     }

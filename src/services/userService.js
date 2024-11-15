@@ -25,9 +25,6 @@ class UserService {
         const token = jwt.sign({id: user.id}, SECREt_KEY, {expiresIn: '24h'});
         return token;
     }
-
-    async getUsers(){
-        return userRepository.findAll();
-    }
 }
+
 module.exports = new UserService();
