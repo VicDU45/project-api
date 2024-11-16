@@ -2,15 +2,13 @@ const jwt = require('jsonwebtoken');
 const pedidosRepository = require('../repositories/pedidosRepository');
 const { Error } = require('sequelize');
 
-const SECREt_KEY = 'vicThay1';
-
 class PedidoService{
     async criarPedido(token, pedidoData){
         try{
             const decoded = jwt.verify(token, SECRET_KEY);
             const userId = decoded.id;
 
-            const pedido = await pedidoRepository.createPedido({ ...pedidoData, userId });
+            const pedido = await pedidosRepository.createPedidos({ ...pedidoData, userId });
             return { message: "Pedido criado com sucesso", pedido };
         }catch(error){
             throw new Error("Token inválido ou expirado")
@@ -23,28 +21,26 @@ class PedidoService{
             const decoded = jwt.verify(token, SECRET_KEY);
             const userId = decoded.id;
 
-            const pedido = await pedidoRepository.findPedidoById(pedidoId);
+            const pedido = await pedidosRepository.findPedidoById(pedidoId);
             if (!pedido) throw new Error("Pedido não encontrado");
             if (pedido.userId !== userId) throw new Error("Acesso não autorizado para deletar este pedido");
 
-            await pedidoRepository.deletePedido(pedidoId);
+            await pedidosRepository.deletePedido(pedidoId);
             return { message: "Pedido deletado com sucesso" };
         } catch (error) {
             throw new Error(error.message);
         }
     }
 
-    async getPedidos(){
+    async getPedidos(userId) {
         try {
-            const decoded = jwt.verify(token, SECRET_KEY);
-            const userId = decoded.id;
-
-            const pedidos = await pedidoRepository.findAll(userId);
+            const pedidos = await pedidosRepository.findAll(userId);
             return pedidos;
         } catch (error) {
-            throw new Error("Token inválido ou expirado");
+            throw new Error("Erro ao obter pedidos");
         }
     }
+    
 }
 
 module.exports = new PedidoService();

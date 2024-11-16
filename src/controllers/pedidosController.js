@@ -25,12 +25,12 @@ router.delete('/tirar/:pedidoId', async (req, res) => {
     }
 });
 
-router.get('/All', authenticateToken, async (req, res) =>{
-    try{
-        const Pedidos = await userService.getPedidos();
-        res.json(Pedidos);
-    }catch (error){
-        res.status(400).json({error: error.message});
+router.get('/All', authenticateToken, async (req, res) => {
+    try {
+        const pedidos = await pedidoService.getPedidos(req.user.id);
+        res.json(pedidos);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
 });
 

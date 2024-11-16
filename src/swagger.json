@@ -109,6 +109,68 @@
           }
         }
       },
+      "/api/user/actualizar": {
+        "put": {
+          "tags": ["Clientes"],
+          "summary": "actualizar senha de usuário",
+          "security": [  
+            {
+              "BearerAuth": []
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "senhaAtual": {
+                      "type": "string"
+                    },
+                    "novaSenha": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["senhaAtual", "novaSenha"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "senha atualizada com sucesso",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Erro nos dados fornecidos"
+            },
+            "401": {
+              "description": "não autorizado"
+            },
+            "404": {
+              "description": "usuario não encontrado"
+            },
+            "500": {
+              "description": "Erro ao atualizar senha"
+            }
+          }
+        }
+      },
+
+
+
       "/api/pedidos/add": {
         "post":{
           "tags": ["Pedidos"],
@@ -157,20 +219,23 @@
         "delete":{
           "tags": ["Pedidos"],
           "summary": "deletar um pedido da lista",
-          "parameters":{
+          "parameters":[
+            {
             "name": "authorization",
             "in": "header",
             "required": true,
             "schema":{
               "type": "string"
+            }
             },
-            "nameId": "pedidoID",
+            {"nameId": "pedidoID",
             "inId": "path",
             "requiredId": true,
             "schemaId":{
               "type": "integer"
             }
-          } 
+            }
+          ] 
         },
         "responses": {
           "200":{
@@ -185,11 +250,6 @@
         "get": {
           "tags": ["Pedidos"],
           "summary": "Obter a lista de pedidos",
-          "security": [  
-            {
-              "BearerAuth": []
-            }
-          ],
           "responses": {
             "200": {
               "description": "Lista de pedidos",

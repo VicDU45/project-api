@@ -25,6 +25,23 @@ class UserService {
         const token = jwt.sign({id: user.id}, SECREt_KEY, {expiresIn: '24h'});
         return token;
     }
+    async atualizar(username, senhaAtual, novaSenha){
+        const user = await userRepository.findByUserName(username);
+        if(!user){
+            throw new Error('usuário não encontrado');
+        }
+
+        const isPasswordValid = await bcrypt.compare(senhaAtual, user.password);
+        if(!isPasswordValid){
+            throw new Error('Senha atual incorrecta');
+        }
+        const hashednewPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashednewPassword
+
+        await userRepository.updateUser(username, { password: hashednewPassword})
+
+        return {message: 'senha atualizada com sucesso'};
+    }
 }
 
 module.exports = new UserService();

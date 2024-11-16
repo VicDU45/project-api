@@ -1,13 +1,17 @@
 const Compra = require('../models/compra');
 
 class pedidosRepository{
-    async createPedidos(compra){
-        return await Compra.create(compra);
+    async createPedidos(Compra){
+        return await Compra.create(Compra);
     }
 
-    async findAll(){
-        return await Compra.findAll();
-    }
+    async findAll(userId) {
+        return await Compra.findAll({
+            where: {
+                userId: userId
+            }
+        });
+    }    
 }
 
 module.exports =  new pedidosRepository;
