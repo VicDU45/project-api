@@ -35,7 +35,7 @@ class UserService {
         if(!isPasswordValid){
             throw new Error('Senha atual incorrecta');
         }
-        const hashednewPassword = await bcrypt.hash(newPassword, 10);
+        const hashednewPassword = await bcrypt.hash(novaSenha, 10);
         user.password = hashednewPassword
 
         await userRepository.updateUser(username, { password: hashednewPassword})
