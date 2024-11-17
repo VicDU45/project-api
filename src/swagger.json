@@ -112,7 +112,7 @@
       "/api/user/actualizar": {
         "put": {
           "tags": ["Clientes"],
-          "summary": "actualizar senha de usuário",
+          "summary": "atualizar senha de usuário",
           "security": [  
             {
               "BearerAuth": []
@@ -168,9 +168,6 @@
           }
         }
       },
-
-
-
       "/api/pedidos/add": {
         "post":{
           "tags": ["Pedidos"],
