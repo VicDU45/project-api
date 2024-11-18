@@ -3,23 +3,17 @@ const pedidosRepository = require('../repositories/pedidosRepository');
 const SECRET_KEY = 'vicThay1';
 
 class PedidoService {
-    async criarPedido(token, pedidoData) {
+    async criarPedido(pedidoData) {
         try {
-            const decoded = jwt.verify(token, SECRET_KEY);
-            const userId = decoded.id;
-
-            const pedido = await pedidosRepository.createPedidos({ ...pedidoData, user_id: userId });
+            const pedido = await pedidosRepository.createPedidos({ pedidoData });
             return { message: "Pedido criado com sucesso", pedido };
         } catch (error) {
             throw new Error("Token inválido ou expirado");
         }
     }
 
-    async deletarPedido(token, pedidoId) {
+    async deletarPedido(pedidoId) {
         try {
-            const decoded = jwt.verify(token, SECRET_KEY);
-            const userId = decoded.id;
-
             const pedido = await pedidosRepository.findPedidoById(pedidoId);
             if (!pedido) throw new Error("Pedido não encontrado");
             if (pedido.user_id !== userId) throw new Error("Acesso não autorizado para deletar este pedido");
