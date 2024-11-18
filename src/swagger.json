@@ -172,14 +172,6 @@
         "post":{
           "tags": ["Pedidos"],
           "summary": "adicionar um novo pedido",
-          "parameters":{
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema":{
-              "type": "string"
-            }
-          },
           "requestBody": {
             "required": true,
             "content": {
@@ -187,9 +179,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
-                    },
                     "item": {
                       "type": "string"
                     },
@@ -215,24 +204,8 @@
       "/api/pedidos/tirar": {
         "delete":{
           "tags": ["Pedidos"],
-          "summary": "deletar um pedido da lista",
-          "parameters":[
-            {
-            "name": "authorization",
-            "in": "header",
-            "required": true,
-            "schema":{
-              "type": "string"
-            }
-            },
-            {"nameId": "pedidoID",
-            "inId": "path",
-            "requiredId": true,
-            "schemaId":{
-              "type": "integer"
-            }
-            }
-          ] 
+          "summary": "deletar um pedido da lista"
+           
         },
         "responses": {
           "200":{
