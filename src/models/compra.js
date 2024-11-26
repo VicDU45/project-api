@@ -22,8 +22,7 @@ Compra.init({
     },
     pedidoData: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true 
+        allowNull: false 
     }
     
 }, {
