@@ -2,8 +2,8 @@ const Compra = require('../models/compra');
 const { Op } = require('sequelize');
 
 class PedidosRepository {
-    pedidoData = { Op }
     async createPedidos(pedidoData) {
+        console.log("teste2")
         return await Compra.create(pedidoData);  
     }
 

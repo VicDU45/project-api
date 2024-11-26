@@ -3,10 +3,10 @@ const router = express.Router();
 const pedidoService = require('../services/pedidosServices');
 const authenticateToken = require('../middleware/auth');
 
-router.post('/add',  async (req, res) => {
+router.post('/add',  async (req, res) => { 
     try {
         const { item, quantidade, pedidoData } = req.body;
-        const pedido = await pedidoService.criarPedido({ item, quantidade, pedidoData });
+        const pedido = await pedidoService.criarPedido(item, quantidade, pedidoData);
         res.json(pedido);
     } catch (error) {
         res.status(400).json({ error: error.message });

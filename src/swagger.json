@@ -184,6 +184,9 @@
                     },
                     "quantidade": {
                       "type": "integer"
+                    },
+                    "pedidoData": {
+                      "type": "string"
                     }
                   }
                 }
@@ -220,6 +223,11 @@
         "get": {
           "tags": ["Pedidos"],
           "summary": "Obter a lista de pedidos",
+          "security": [  
+            {
+              "BearerAuth": []
+            }
+          ],
           "responses": {
             "200": {
               "description": "Lista de pedidos",

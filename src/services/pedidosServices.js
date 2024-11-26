@@ -3,10 +3,12 @@ const pedidosRepository = require('../repositories/pedidosRepository');
 const SECRET_KEY = 'vicThay1';
 
 class PedidoService {
-    async criarPedido(pedidoData) {
+    async criarPedido(item, quantidade, pedidoData) {
         try {
-            const pedido = await pedidosRepository.createPedidos({ pedidoData });
+            const pedido = await pedidosRepository.createPedidos({item, quantidade, pedidoData});
+            console.log("teste3")
             return { message: "Pedido criado com sucesso", pedido };
+        
         } catch (error) {
             throw new Error("Token inválido ou expirado");
         }
