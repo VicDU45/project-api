@@ -1,0 +1,403 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User API",
+    "description": "API para registro, login e pedidos de compra",
+    "version": "1.0.0"
+  },
+    "components":{
+      "securitySchemes":{
+        "BearerAuth":{
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    
+  },
+  "paths": {
+    "/api/user/register": {
+      "post": {
+        "tags": ["Clientes"],
+        "summary": "Registrar um novo usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário registrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao registrar o usuário"
+          }
+        }
+      }
+    },
+      "/api/user/atualizar": {
+      "put": {
+        "tags": ["Clientes"],
+        "summary": "atualizar senha de usuário",
+        "security": [  
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "senhaAtual": {
+                    "type": "string"
+                  },
+                  "novaSenha": {
+                    "type": "string"
+                  }
+                },
+                "required": ["senhaAtual", "novaSenha"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "senha atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro nos dados fornecidos"
+          },
+          "401": {
+            "description": "não autorizado"
+          },
+          "404": {
+            "description": "usuario não encontrado"
+          },
+          "500": {
+            "description": "Erro ao atualizar senha"
+          }
+        }
+      }
+    },
+    "/api/user/login": {
+      "post": {
+        "tags": ["Clientes"],
+        "summary": "Login de usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao realizar login"
+          }
+        }
+      }
+    },
+    "/api/user/users": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Obter a lista de usuários",
+        "security": [  
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "username": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao obter a lista de usuários"
+          }
+        }
+      }
+    },    
+
+    "/api/pedidos/add": {
+      "post":{
+        "tags": ["Pedidos"],
+        "summary": "adicionar um novo pedido",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "item": {
+                    "type": "string"
+                  },
+                  "quantidade": {
+                    "type": "integer"
+                  },
+                  "pedidoData": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200":{
+            "description": "sucesso ao adicionar o item na lista de pedidos"
+          },
+          "400":{
+            "description": "Erro ao adicionar o item na lista de pedidos"
+          }
+        }
+        
+      }
+    },
+
+    "/api/pedidos/alterar/{id}": {
+      "put": {
+        "tags": ["Pedidos"],
+        "summary": "Atualizar dados de um livro",
+        "security":[
+          {
+            "BearerAuth":[]
+          }
+        ], 
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                  "schema": {
+                  "type": "object",
+                  "properties": {
+                    "item": {
+                      "type": "string"
+                    },
+                    "quantidade": {
+                      "type": "integer"
+                    },
+                    "pedidoData": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["item", "quantidade", "pedidoData"]             
+                  
+                }
+              }
+            }
+          },
+        "responses": {
+          "200": {
+            "description": "Pedido atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "item": {
+                      "type": "string"
+                    },
+                    "quantidade": {
+                      "type": "integer"
+                    },
+                    "pedidoData": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao atualizar o Pedido"
+          }
+        }
+      }
+    },
+    "/api/pedidos/tirar/{id}": {
+      "delete":{
+          "tags": ["Pedidos"],
+          "summary": "deletar um pedido da lista",    
+          "security": [
+            {
+                "BearerAuth": []
+              }
+          ],
+          "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+            "200":{
+              "description": "sucesso ao tirar o item da lista de pedidos"
+            },
+            "400":{
+              "description": "Erro ao eliminar o item da lista de pedidos"
+            }  
+          }  
+        }
+    },
+    "/api/pedidos/All": {
+      "get": {
+        "tags": [ "Pedidos" ],
+        "summary": "Obter a lista de pedidos",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pedidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "format": "uuid"
+                      },
+                      "item": {
+                        "type": "string"
+                      },
+                      "quantidade": {
+                        "type": "integer"
+                      },
+                      "pedidoData": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao obter a lista de usuários"
+          }
+        }
+      }
+    }
+
+
+    
+  }
+}
